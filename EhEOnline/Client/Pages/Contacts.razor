@@ -1,0 +1,50 @@
+﻿@page "/Contacts"
+@using EhEOnline.Shared;
+@inject HttpClient Http
+
+<button @onclick="GetOrders">Get</button>
+
+@if (contacts == null)
+{
+    <p>Click on Button</p>
+
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Comments</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var con in contacts)
+            {
+                <tr>
+                    <td>@con.id</td>
+                    <td>@con.name</td>
+                    <td>@con.phone</td>
+                    <td>@con.email</td>
+                    <td>@con.comment</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    ContactUs[]? contacts;
+
+    async void GetOrders()
+    {
+        contacts = await Http.GetFromJsonAsync<ContactUs[]>("/contacts");
+        StateHasChanged();
+
+    }
+}
